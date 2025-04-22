@@ -22,19 +22,19 @@ export const invoiceData: Invoice = {
         {
             id: 1,
             product: 'Cpu Intel i9',
-            price: 599,
+            price: 5999,
             quantity: 1
         },
         {
             id: 2,
             product: 'Corsair Teclado Mecanico',
-            price: 399,
+            price: 40000,
             quantity: 2
         },
         {
             id: 3,
             product: 'Monitor Asus',
-            price: 899,
+            price: 800000,
             quantity: 3
         },
     ]
