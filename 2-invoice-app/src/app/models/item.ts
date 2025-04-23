@@ -3,4 +3,8 @@ export class Item {
     product!: string;
     quantity!: number;
     price!: number;
+
+    total(): number {
+        return this.price * this.quantity;
+    }
 }
