@@ -1,5 +1,27 @@
 # Apuntes de Angular
 
+## Indice
+
+[Instalaciones necesarias y documentación](#instalaciones-necesarias-y-documentación)
+
+[Lo que es Angular](#lo-que-es-angular)
+
+[CLI](#cli)
+
+[Estructura de proyecto](#estructura-de-proyecto)
+
+[Modulos](#modulos)
+
+[Componentes](#componentes)
+
+[Enlace de datos](#enlace-de-datos)
+
+[Comunicación entre componentes](#comunicación-entre-componentes)
+
+[Servicios](#servicios)
+
+---
+
 ## Instalaciones necesarias y documentación
 * Chrome
 * VS Code
@@ -21,9 +43,7 @@ El --no-standalone te instalará el app.module.ts y el ngmodule al igual que se 
 Sino podemos usar Angular 16 con NODE 18!
 
 
-## Teoria
-
-**¿Qué es Angular?**
+## Lo que es Angular
 Framework de diseño de aplicaciones y de una sola pagina eficientes
 
 **MVC**
@@ -32,7 +52,7 @@ Framework de diseño de aplicaciones y de una sola pagina eficientes
 * Controlador: Controla el flujo entre la vista y el modelo. Maneja interaciones del usuario como clics de boton o eventos de entrada.
 
 
-**CLI de Angular**
+## CLI
 Herramienta de linea de comandos con herramientas prediseñadas .
 
 Instalar ultima versión o versión 16: 
@@ -46,18 +66,21 @@ Crear aplicación (usa guiones y evita mayusculas)
 ng new new_project
 ```
 
-**Estructura de proyecto**
+## Estructura de proyecto
 [README](https://baguilar6174.medium.com/estructura-base-para-cualquier-proyecto-de-angular-6a035a27bfcf)
 
-**Modulos (ngModule)**
-Mecanismo de organización y encapsulación que se utiliza para agrupar componentes, directivas, pipes (filtros), servicios, etc. Estos ayudan a dividir una aplicación en partes mas pequeñas y  manejables, faciltando el desarrollo, mantenibilidad y escabilidad.
+
+## Modulos
+ngModule. Mecanismo de organización y encapsulación que se utiliza para agrupar componentes, directivas, pipes (filtros), servicios, etc. Estos ayudan a dividir una aplicación en partes mas pequeñas y  manejables, faciltando el desarrollo, mantenibilidad y escabilidad.
 
 ```shell
 ng generate module module-name
 ng g m module-name
 ```
-**Componentes (Controller)**
-Bloque de construccion de creacion de UI.  Ej: header, formulario, pie de pagina, etc.
+
+## Componentes
+
+Similar a controller. Bloque de construccion de creacion de UI.  Ej: header, formulario, pie de pagina, etc.
 ```shell
 ng generate component components/new_component
 ng g c components/new_component
@@ -69,8 +92,8 @@ Se crean 4 archivos:
 * component.spec.ts
 
 
-**Enlace de datos (Binding)**
-Capacidad de conectar los datos entre el modelo y la vista, sin intervension manual
+## Enlace de datos
+Binding. Capacidad de conectar los datos entre el modelo y la vista, sin intervension manual
 Ej: {{value}}, [property] = "value", (event), [(ng-model)]
 
 Estos son reactivos usando observables en tiempo real
@@ -79,27 +102,21 @@ Estos son reactivos usando observables en tiempo real
 Metadata:
 
 
-**Comunicación entre componentes**
+## Comunicación entre componentes
+
 Los componentes se comunican mediante vinvulacion de propiedades de entrada y salida.
 
-**Servicios**
+## Servicios
+
 Clase TS que se usa para organizar y compartir logica, datos o funcionalidades entre diferentes componentes.
 
 Facilita la comunicacion entre componentes
 
-
-
-
-
-
-
-
-
-
-
-
-
----
-
-Crear servicio
+```shell
+ng generate service services/service_name
 ng g s services/service_name
+```
+
+**Inyeccion de dependencias:**
+* declaracion de variable en constructor de clase componente con _ inicial
+* 
