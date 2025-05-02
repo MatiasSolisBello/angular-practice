@@ -20,6 +20,16 @@
 
 [Servicios](#servicios)
 
+[Directivas](#directivas)
+
+[Pipes](#pipes)
+
+[Enrutamiento](#enrutamiento)
+
+[Estructuras de control](#estructuras-de-control)
+
+[Formularios](#formularios)
+
 ---
 
 ## Instalaciones necesarias y documentación
@@ -120,3 +130,71 @@ ng g s services/service_name
 **Inyeccion de dependencias:**
 * declaracion de variable en constructor de clase componente con _ inicial
 * 
+
+
+## Directivas
+
+Instrucciones en HTML que extienden o personalizan funcionalidades del DOM.
+
+```shell
+ng generate directive directive_name
+ng g d directive
+```
+
+## Pipes
+
+* Filtros. 
+* Formatean y transformar datos en la vista de una aplicación. 
+* Los pipes son funciones que toman un valor de entrada y lo procesan para proporcionar una representación modificada o formateada en la interfaz de usuario
+* se aplican utilizando el símbolo de barra vertical |
+* Ej: formateo de fechas, números, monedas, texto en mayúsculas o minúsculas, entre otros
+* Puedes usar pipes integrados: DatePipe, UpperCasePipe, LowerCasePipe, CurrencyPipe, DecimalPipe, PercentPipe, entre otros
+* Y crear tus propios pipes
+
+```shell
+ng generate pipe pipe_name
+ng g p pipe_name
+```
+
+## Enrutamiento
+* Routing
+* Capacidad de dirigir el flujo de navegación de una aplicación web sin recargar la pagina
+* RouterModule que permite la configuración y gestión del enrutamiento en una aplicación Angular
+
+
+## Estructuras de control
+
+Manupular el flujo de ejecucion en la aplicación
+
+* ngIf
+* ngFor
+
+```typescript
+<tr *ngFor="let usuario of listUsuario">
+    <td>{{usuario.id}}</td>
+    <td>{{usuario.username}}</td>
+    <td>{{usuario.email}}</td>
+    <td>{{usuario.telefono}}</td>
+    <td>{{usuario.password}}</td>
+</tr>
+```
+
+* ngSwitch: Muestra un bloque de contenido según el valor de una expresión
+
+* ngClass: Permite cambiar dinamicamentelas clases de un elemento
+
+* ngStyle: Permite cambia dianmicamnete los estilos de un elemento
+
+* ngContainer: No afecta al DOM, agrupa elementos sin agregar nodos adicionales al arbol DOM
+
+* ngTemplate
+
+* ngPlural
+
+
+## Formularios
+
+### Basados en plantillas (template-driven)
+* Importar FormsModule
+
+### Reactivos (reactive)
