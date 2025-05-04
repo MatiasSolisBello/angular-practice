@@ -30,6 +30,12 @@
 
 [Formularios](#formularios)
 
+[Ciclo de vida](#ciclo-de-vida)
+
+[API y HTTP](#API-y-HTTP)
+
+[Signals](#signals)
+
 ---
 
 ## Instalaciones necesarias y documentación
@@ -81,7 +87,7 @@ ng new new_project
 
 
 ## Modulos
-ngModule. Mecanismo de organización y encapsulación que se utiliza para agrupar componentes, directivas, pipes (filtros), servicios, etc. Estos ayudan a dividir una aplicación en partes mas pequeñas y  manejables, faciltando el desarrollo, mantenibilidad y escabilidad.
+ngModule. Mecanismo de organización y encapsulación que se utiliza para agrupar componentes, directivas, pipes (filtros), servicios, etc. Estos ayudan a dividir una aplicación en partes mas pequeñas y  manejables, facilitando el desarrollo, mantenibilidad y escabilidad.
 
 ```shell
 ng generate module module-name
@@ -109,16 +115,16 @@ Ej: {{value}}, [property] = "value", (event), [(ng-model)]
 Estos son reactivos usando observables en tiempo real
 
 
-Metadata:
+Metadata: Angular usa metadatos decoradores como @Component, @NgModule, etc., para proporcionar información sobre clases al framework.
 
 
 ## Comunicación entre componentes
 
-Los componentes se comunican mediante vinvulacion de propiedades de entrada y salida.
+Los componentes se comunican mediante vinculación de propiedades de entrada y salida.
 
 ## Servicios
 
-Clase TS que se usa para organizar y compartir logica, datos o funcionalidades entre diferentes componentes.
+Clases en TypeScript que se usa para organizar y compartir logica, datos o funcionalidades entre diferentes componentes.
 
 Facilita la comunicacion entre componentes
 
@@ -164,7 +170,7 @@ ng g p pipe_name
 
 ## Estructuras de control
 
-Manupular el flujo de ejecucion en la aplicación
+Manipular el flujo de ejecucion en la aplicación
 
 * ngIf
 * ngFor
@@ -183,7 +189,7 @@ Manupular el flujo de ejecucion en la aplicación
 
 * ngClass: Permite cambiar dinamicamentelas clases de un elemento
 
-* ngStyle: Permite cambia dianmicamnete los estilos de un elemento
+* ngStyle: Permite cambia dinámicamente los estilos de un elemento
 
 * ngContainer: No afecta al DOM, agrupa elementos sin agregar nodos adicionales al arbol DOM
 
@@ -198,3 +204,30 @@ Manupular el flujo de ejecucion en la aplicación
 * Importar FormsModule
 
 ### Reactivos (reactive)
+Importar ReactiveFormsModule, crear instancias de FormGroup y FormControl, y vincularlos desde el componente a la vista usando formGroup y formControlName.
+
+## Ciclo de vida
+
+El ciclo de vida de un componente se compone de una serie de eventos que ocurren desde la creación hasta la destrucción del componente
+
+* ngOnChanges: Se dispara cuando los datos de entrada (@Input) del componente cambian.
+* ngOnInit: Ocurre después de que Angular ha inicializado todas las propiedades del componente
+* ngDoCheck: Se ejecuta durante cada detección de cambios y permite realizar acciones de verificación personalizadas.
+* ngAfterContentInit: Ocurre después de que Angular haya proyectado el contenido en el componente.
+* ngAfterContentChecked: Se ejecuta después de cada verificación del contenido proyectado.
+* ngAfterViewInit: Ocurre después de que Angular haya inicializado las vistas del componente.
+* ngAfterViewChecked: Se ejecuta después de cada verificación de las vistas del componente.
+* ngOnDestroy: Se dispara justo antes de que Angular destruya el componente
+
+
+## API y HTTP
+
+**API:**
+Las API (Interfaces de Programación de Aplicaciones, por sus siglas en inglés) se utilizan para permitir la comunicación entre diferentes sistemas de software. Son conjuntos de reglas y definiciones que permiten que aplicaciones y servicios se comuniquen entre sí. 
+
+Angular usa HttpClient para hacer peticiones HTTP. Este se importa desde @angular/common/http y se inyecta en los servicios para realizar solicitudes GET, POST, etc.
+
+## Signals
+
+* Disponible a partir de Angular 16
+* Permiten un modelo reactivo más explícito para manejar el estado. Ejemplo básico:
