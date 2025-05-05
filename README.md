@@ -22,6 +22,8 @@
 
 [Directivas](#directivas)
 
+  * [Tipos de Directivas](#tipos-de-directivas)
+
 [Pipes](#pipes)
 
 [Enrutamiento](#enrutamiento)
@@ -109,43 +111,355 @@ Se crean 4 archivos:
 
 
 ## Enlace de datos
-Binding. Capacidad de conectar los datos entre el modelo y la vista, sin intervension manual
-Ej: {{value}}, [property] = "value", (event), [(ng-model)]
+* Tambien llamado **Data Binding**
+* Permite sincronizar los datos entre el modelo (componentes TypeScript) y la vista (HTML). 
+* Esta sincronización puede ser 
+    **unidireccional** (del modelo a la vista o viceversa) 
+    **bidireccional** lo que permite mantener actualizados los datos en ambos sentidos sin intervención manual
 
-Estos son reactivos usando observables en tiempo real
+Angular ofrece varios tipos de enlace de datos:
 
+**Interpolación** ({{ }})
 
-Metadata: Angular usa metadatos decoradores como @Component, @NgModule, etc., para proporcionar información sobre clases al framework.
+Permite mostrar valores desde el componente hacia la vista.
 
+```typescript
+// componente.ts
+export class AppComponent {
+  nombre = 'Juan';
+}
+```
+
+```html
+<!-- componente.html -->
+<p>Hola, {{ nombre }}!</p>
+```
+
+**Enlace de propiedad** ([property])
+
+Permite enlazar atributos HTML a propiedades del componente.
+
+```typescript
+export class AppComponent {
+  imagenUrl = 'https://angular.io/assets/images/logos/angular/angular.svg';
+}
+```
+
+```html
+<img [src]="imagenUrl">
+```
+
+**Enlace de evento** ((event))
+
+Permite ejecutar código del componente en respuesta a eventos del DOM como clics, cambios, teclas, etc.
+
+```typescript
+export class AppComponent {
+  mostrarMensaje() {
+    alert('¡Botón presionado!');
+  }
+}
+```
+
+```html
+<button (click)="mostrarMensaje()">Haz clic</button>
+```
+
+**Enlace bidireccional** ([(ngModel)])
+
+Sincroniza datos en ambas direcciones. Necesita importar FormsModule.
+
+Importante: No olvides importar FormsModule en tu módulo:
+
+```typescript
+import { FormsModule } from '@angular/forms';
+
+@NgModule({
+  imports: [FormsModule],
+})
+export class AppModule {}
+```
+
+```typescript
+export class AppComponent {
+  nombreUsuario = '';
+}
+```
+
+```html
+<input [(ngModel)]="nombreUsuario" placeholder="Ingresa tu nombre">
+<p>Hola, {{ nombreUsuario }}</p>
+```
+
+**Metadata (Decoradores)**
+
+Angular utiliza decoradores (metadata) como parte de su sistema de enlace de datos. Algunos importantes:
+* @Input() y @Output() para comunicación entre componentes.
+* @Component() para definir metadatos de un componente (como el selector, template, estilos, etc.).
 
 ## Comunicación entre componentes
 
-Los componentes se comunican mediante vinculación de propiedades de entrada y salida.
+En Angular, la aplicación se estructura como un árbol de componentes. Para que estos componentes se comuniquen entre sí, existen varios mecanismos dependiendo de la relación entre ellos:
+
+### Padre → Hijo: usando @Input()
+
+Cuando un componente padre quiere pasar datos a su hijo, se usa el decorador @Input() en el hijo.
+
+```typescript
+// hijo.component.ts
+import { Component, Input } from '@angular/core';
+
+@Component({
+  selector: 'app-hijo',
+  template: `<p>Nombre recibido: {{ nombre }}</p>`
+})
+export class HijoComponent {
+  @Input() nombre!: string;
+}
+```
+
+```html
+<!-- padre.component.html -->
+<app-hijo [nombre]="'Juanito'"></app-hijo>
+```
+
+### Hijo → Padre: usando @Output() y EventEmitter
+
+Cuando un componente hijo quiere enviar datos al padre, se usa @Output() con EventEmitter.
+
+```typescript
+// hijo.component.ts
+import { Component, Output, EventEmitter } from '@angular/core';
+
+@Component({
+  selector: 'app-hijo',
+  template: `<button (click)="enviar()">Enviar al padre</button>`
+})
+export class HijoComponent {
+  @Output() notificarPadre = new EventEmitter<string>();
+
+  enviar() {
+    this.notificarPadre.emit('¡Hola desde el hijo!');
+  }
+}
+```
+
+```html
+<!-- padre.component.html -->
+<app-hijo (notificarPadre)="recibirMensaje($event)"></app-hijo>
+<p>{{ mensajeRecibido }}</p>
+```
+
+```typescript
+// padre.component.ts
+export class PadreComponent {
+  mensajeRecibido = '';
+
+  recibirMensaje(mensaje: string) {
+    this.mensajeRecibido = mensaje;
+  }
+}
+```
+
+### Comunicación entre hermanos (Siblings): usando un servicio compartido
+
+Cuando los componentes hermanos necesitan comunicarse, se crea un servicio común que maneja el estado o emite eventos.
+
+```typescript
+// comunicacion.service.ts
+import { Injectable } from '@angular/core';
+import { Subject } from 'rxjs';
+
+@Injectable({ providedIn: 'root' })
+export class ComunicacionService {
+  private mensajeSource = new Subject<string>();
+  mensaje$ = this.mensajeSource.asObservable();
+
+  enviar(mensaje: string) {
+    this.mensajeSource.next(mensaje);
+  }
+}
+```
+
+```typescript
+// hermano1.component.ts
+constructor(private comunicacion: ComunicacionService) {}
+
+enviarMensaje() {
+  this.comunicacion.enviar('Hola hermano 2');
+}
+```
+
+```typescript
+// hermano2.component.ts
+mensaje = '';
+constructor(private comunicacion: ComunicacionService) {
+  this.comunicacion.mensaje$.subscribe(msg => this.mensaje = msg);
+}
+```
+
+### Usar ViewChild para acceder al hijo directamente
+
+Cuando el padre necesita invocar un método o leer una propiedad de su hijo.
+
+```typescript
+// hijo.component.ts
+@Component({ ... })
+export class HijoComponent {
+  saludar() {
+    console.log('Hola desde el hijo');
+  }
+}
+```
+
+```typescript
+// padre.component.ts
+export class PadreComponent implements AfterViewInit {
+  @ViewChild(HijoComponent) hijo!: HijoComponent;
+
+  ngAfterViewInit() {
+    this.hijo.saludar();
+  }
+}
+```
+
+**Recomendación**
+* Para casos simples: @Input() y @Output().
+* Para comunicación compleja o entre hermanos: servicio con RxJS.
+* Para control directo del hijo: ViewChild.
+
+**Resumen:**
+
+
+| Relación entre componentes | Método                        | Decoradores / Herramientas       | Dirección de datos       | Cuándo usarlo                                                   |
+|----------------------------|-------------------------------|----------------------------------|--------------------------|------------------------------------------------------------------|
+| Padre → Hijo               | `@Input()`                    | `@Input()`                       | Unidireccional           | Para pasar datos desde el componente padre al hijo.             |
+| Hijo → Padre               | `@Output()` + `EventEmitter`  | `@Output()`, `EventEmitter`      | Unidireccional (evento)  | Para notificar al padre de un evento o enviarle datos.          |
+| Hermanos                   | Servicio compartido + `RxJS`  | `Subject`, `Observable`          | Bidireccional            | Para comunicar componentes que no tienen relación directa.      |
+| Padre → Hijo (directo)     | `ViewChild`                   | `@ViewChild()`                   | Acceso directo           | Para invocar métodos o acceder a propiedades del hijo.          |
+| Sin relación (global)      | State management (opcional)   | NgRx, Signals, BehaviorSubject   | Bidireccional / Reactivo | En apps complejas que necesitan control de estado global.       |
+
+
+---
 
 ## Servicios
 
-Clases en TypeScript que se usa para organizar y compartir logica, datos o funcionalidades entre diferentes componentes.
+Los servicios en Angular son clases que encapsulan lógica reutilizable, como acceso a datos, lógica de negocio o comunicación entre componentes. Se utilizan para mantener los componentes limpios y enfocados únicamente en la presentación.
 
-Facilita la comunicacion entre componentes
+* Son clases normales de TypeScript decoradas opcionalmente con @Injectable().
+* Se inyectan en componentes u otros servicios usando Inyección de Dependencias (DI).
+* Se pueden usar para:
+    * Compartir datos entre componentes.
+    * Realizar llamadas HTTP.
+    * Manejar lógica de negocio compleja.
+    * Implementar almacenamiento local (state management ligero).
 
+Cómo crear un servicio
 ```shell
 ng generate service services/service_name
 ng g s services/service_name
 ```
+Esto crea un archivo service_name.service.ts
 
-**Inyeccion de dependencias:**
-* declaracion de variable en constructor de clase componente con _ inicial
-* 
+### 📊 Tabla comparativa: Tipos de uso de servicios en Angular
+
+| Uso común                  | Herramientas involucradas            | Características principales                                       | Ejemplo práctico                                 |
+|---------------------------|--------------------------------------|-------------------------------------------------------------------|--------------------------------------------------|
+| Lógica compartida         | Servicio simple                      | Encapsula lógica de negocio para reutilización                   | Validación, cálculos, formateos                 |
+| Comunicación entre componentes | `Subject`, `BehaviorSubject`       | Transmite eventos o datos reactivos entre componentes             | Comunicación entre hermanos                     |
+| Acceso a APIs             | `HttpClient`, `Observable`           | Llama a servicios web externos (REST, GraphQL, etc.)              | CRUD con APIs REST                              |
+| Gestión de estado         | `BehaviorSubject`, NgRx, Signals     | Maneja datos compartidos y cambios de estado en la app            | Carrito de compras, usuario autenticado         |
+| Singleton global          | `@Injectable({ providedIn: 'root' })` | Instancia única accesible desde cualquier componente o servicio  | Cualquier tipo de uso general                   |
 
 
 ## Directivas
 
-Instrucciones en HTML que extienden o personalizan funcionalidades del DOM.
+* Instrucciones que le dicen a Angular cómo manipular el DOM o el comportamiento de los elementos HTML. 
+* Angular ofrece directivas estructurales, atributo y también permite crear directivas personalizadas.
 
-```shell
-ng generate directive directive_name
-ng g d directive
+### Tipos de Directivas
+
+#### Directivas estructurales
+
+Cambian la estructura del DOM (agregar, eliminar o reemplazar elementos).
+📌 Se reconocen por tener el prefijo *.
+
+```html
+<!-- *ngIf -->
+<p *ngIf="mostrar">Esto se muestra si 'mostrar' es true</p>
+
+<!-- *ngFor -->
+<ul>
+  <li *ngFor="let item of lista">{{ item }}</li>
+</ul>
 ```
+
+```typescript
+lista = ['Angular', 'React', 'Vue'];
+mostrar = true;
+```
+
+#### Directivas de atributo
+
+Cambian el comportamiento o estilo de un elemento ya existente sin modificar su estructura.
+
+```html
+<!-- ngClass aplica clases dinámicamente -->
+<div [ngClass]="{ activo: estaActivo }">Texto</div>
+
+<!-- ngStyle aplica estilos en línea -->
+<p [ngStyle]="{ color: estaActivo ? 'green' : 'gray' }">Estado</p>
+```
+
+```typescript
+estaActivo = true;
+```
+
+#### Directivas personalizadas
+
+* Puedes crear tus propias directivas para reutilizar comportamientos.
+* Las directivas personalizadas más comunes entre los desarrolladores Angular suelen resolver necesidades repetitivas o mejorar la experiencia de usuario en formularios, elementos interactivos y estilos
+
+
+Ejemplo: resaltar texto al pasar el mouse
+
+```bash
+ng generate directive resaltar
+```
+
+```typescript
+// resaltar.directive.ts
+import { Directive, ElementRef, HostListener } from '@angular/core';
+
+@Directive({
+  selector: '[appResaltar]'
+})
+export class ResaltarDirective {
+  constructor(private el: ElementRef) {}
+
+  @HostListener('mouseenter') onMouseEnter() {
+    this.el.nativeElement.style.backgroundColor = 'yellow';
+  }
+
+  @HostListener('mouseleave') onMouseLeave() {
+    this.el.nativeElement.style.backgroundColor = null;
+  }
+}
+```
+
+```html
+<p appResaltar>Texto resaltado al pasar el mouse</p>
+```
+
+**Resumen**
+
+
+| Tipo                    | Qué hace                                 | Ejemplos comunes                             | Características principales                            |
+|-------------------------|-------------------------------------------|----------------------------------------------|---------------------------------------------------------|
+| Estructural             | Agrega o elimina elementos del DOM        | `*ngIf`, `*ngFor`, `*ngSwitchCase`           | Usan `*`, afectan estructura HTML                      |
+| De atributo             | Cambian estilo o comportamiento del DOM   | `ngClass`, `ngStyle`, `[class]`, `[style]`   | Se aplican como atributos HTML                         |
+| Personalizada           | Comportamiento reutilizable en elementos  | `appResaltar`, `appAutofocus`, etc.          | Se crea con `@Directive` y `HostListener`/`ElementRef` |
+
 
 ## Pipes
 
@@ -201,10 +515,60 @@ Manipular el flujo de ejecucion en la aplicación
 ## Formularios
 
 ### Basados en plantillas (template-driven)
+
 * Importar FormsModule
+* Son más declarativos y se construyen directamente en el HTML. Ideales para formularios simples.
+
+```typescript
+import { FormsModule } from '@angular/forms';
+```
+
+```html
+<form #formulario="ngForm" (ngSubmit)="enviar(formulario)">
+  <input type="text" name="nombre" [(ngModel)]="nombre" required>
+  <button type="submit">Enviar</button>
+</form>
+```
 
 ### Reactivos (reactive)
-Importar ReactiveFormsModule, crear instancias de FormGroup y FormControl, y vincularlos desde el componente a la vista usando formGroup y formControlName.
+
+Ofrecen un enfoque programático y estructurado. Más apropiados para formularios complejos y dinámicos.
+
+```typescript
+import { ReactiveFormsModule } from '@angular/forms';
+
+formulario = new FormGroup({
+  nombre: new FormControl('', [Validators.required]),
+});
+```
+
+```html
+<form [formGroup]="formulario" (ngSubmit)="enviar()">
+  <input type="text" formControlName="nombre">
+  <button type="submit">Enviar</button>
+</form>
+```
+
+### 📊 Comparativa: Template-driven vs Reactive Forms
+
+| Característica                  | Template-driven                            | Reactivos (reactive)                          |
+|--------------------------------|---------------------------------------------|-----------------------------------------------|
+| Enfoque                        | Declarativo (HTML)                          | Programático (TypeScript)                     |
+| Ideal para                     | Formularios simples                         | Formularios complejos/dinámicos               |
+| Módulo necesario               | `FormsModule`                               | `ReactiveFormsModule`                         |
+| Enlace de datos                | `[(ngModel)]`                               | `formControlName`, `FormGroup`, `FormControl` |
+| Validaciones                   | En HTML                                     | En TypeScript con `Validators`                |
+| Control de cambios             | Menos explícito                             | Más preciso                                   |
+| Debugging                      | Más difícil                                 | Más claro y rastreable                        |
+| Testing                        | Más difícil                                 | Más fácil                                     |
+
+
+**Diagrama**
+
+<p align="center">
+  <img src="https://sdmntprnorthcentralus.oaiusercontent.com/files/00000000-f554-622f-ad62-5e75fa9e946e/raw?se=2025-05-04T22%3A23%3A39Z&sp=r&sv=2024-08-04&sr=b&scid=0a2c573d-66c5-520c-935e-d2a83b0c5630&skoid=e4438ed3-2a6f-4fd3-bf63-222012dc627c&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2025-05-04T21%3A20%3A04Z&ske=2025-05-05T21%3A20%3A04Z&sks=b&skv=2024-08-04&sig=kjjzJsDrdz6CkdvTXKoCJnaWN564ZDRdqFFLJ6ZFR9w%3D" alt="Diagrama de formularios" width="400">
+</p>
+
 
 ## Ciclo de vida
 
