@@ -17,6 +17,8 @@ export class InvoiceService {
   }
 
   calculateTotal(): number {
-    return this.invoice.items.reduce((acc, item) => acc + (item.price * item.quantity), 0);
+    return this.invoice.items.reduce(
+      (acc, item) => acc + (item.price * item.quantity), 0
+    );
   }
 }

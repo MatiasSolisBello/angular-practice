@@ -4,6 +4,10 @@
         <div class="card-body">
             <h2>Factura {{invoice.name}}</h2>
             <p>{{invoice.id}}. {{invoice.name}}</p>
+            <p>{{empresa}}</p>
+            <img [src]="imagenUrl" style="height: 120px;">
+            <button (click)="mostrarMensaje()">Haz clic</button>
+
         </div>
     </div>
     <br>
@@ -42,8 +46,8 @@
                 @for (item of invoice.items; track $index) {
                 <tr>
                     <td scope="row">{{item.id}}</td>
-                    <td>{{item.product}}</td>
-                    <td>${{item.price}}</td>
+                    <td>{{item.product | uppercase}}</td>
+                    <td>$ {{item.price | number }}</td>
                     <td>{{item.quantity}}</td>
                 </tr>
                 }
@@ -55,7 +59,7 @@
 
         <div class="text-end">
             <h4>Total:</h4>
-            <p>${{total}}</p>
+            <p>$ {{total | number}}</p>
         </div>
     </div>
 </div>

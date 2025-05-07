@@ -14,6 +14,8 @@
 
 [Componentes](#componentes)
 
+[Diferencias clave entre Módulo y Componente](#diferencias-clave-entre-módulo-y-componente)
+
 [Enlace de datos](#enlace-de-datos)
 
 [Comunicación entre componentes](#comunicación-entre-componentes)
@@ -37,6 +39,8 @@
 [API y HTTP](#API-y-HTTP)
 
 [Signals](#signals)
+
+[Guards](#guards)
 
 ---
 
@@ -89,7 +93,26 @@ ng new new_project
 
 
 ## Modulos
-ngModule. Mecanismo de organización y encapsulación que se utiliza para agrupar componentes, directivas, pipes (filtros), servicios, etc. Estos ayudan a dividir una aplicación en partes mas pequeñas y  manejables, facilitando el desarrollo, mantenibilidad y escabilidad.
+* ngModule. 
+* Forma de organizar y agrupar componentes, directivas, pipes y servicios relacionados en una unidad lógica. Angular siempre tiene al menos un módulo: AppModule, pero puedes (y debes) crear módulos adicionales para mantener tu proyecto escalable y organizado.
+
+**¿Para qué sirven?**
+* Separar funcionalidades por dominio (ej: UsuariosModule, AdminModule, etc.).
+* Facilitar carga perezosa (lazy loading).
+* Reutilizar código en diferentes partes de la app.
+* Mejorar el mantenimiento y claridad del código.
+
+### 📊 Tipos de módulos en Angular
+
+| Módulo            | Propósito principal                                  | Importación típica             |
+|-------------------|------------------------------------------------------|--------------------------------|
+| AppModule         | Módulo raíz de la aplicación                         | Una sola vez en `main.ts`     |
+| Feature Module    | Organiza funcionalidad específica                    | En `AppModule` o lazy load     |
+| SharedModule      | Reutilización de componentes/pipes/directivas        | En cualquier otro módulo       |
+| CoreModule        | Servicios singleton (como autenticación, logger)     | Solo en `AppModule`            |
+| RoutingModule     | Define rutas para un módulo                          | Con `RouterModule.forChild()`  |
+
+
 
 ```shell
 ng generate module module-name
@@ -98,16 +121,33 @@ ng g m module-name
 
 ## Componentes
 
-Similar a controller. Bloque de construccion de creacion de UI.  Ej: header, formulario, pie de pagina, etc.
+* @Component.
+* Similar a controller. 
+* Bloque de construccion de creacion de UI.  Ej: header, formulario, pie de pagina, etc.
+
 ```shell
 ng generate component components/new_component
 ng g c components/new_component
 ```
+
 Se crean 4 archivos:
 * component.ts
 * HTML
 * CSS
 * component.spec.ts
+
+## Diferencias clave entre Módulo y Componente
+
+| Aspecto              | Módulo (`@NgModule`)                                 | Componente (`@Component`)                      |
+|----------------------|------------------------------------------------------|------------------------------------------------|
+| Propósito            | Organiza y agrupa partes de la app                   | Representa una vista o parte de la UI          |
+| Decorador            | `@NgModule`                                          | `@Component`                                   |
+| Contenido            | Declara componentes, pipes, directivas               | Incluye HTML, lógica TS y estilos CSS          |
+| Relación             | Puede contener muchos componentes                    | Pertenece a un único módulo                    |
+| Se importa en...     | Otros módulos                                        | Un módulo que lo declara                       |
+| Se usa en...         | No se renderiza directamente                         | Se usa como etiqueta HTML (`<app-x>`)          |
+| Ejemplo de uso       | `imports: [BrowserModule]`                           | `<app-saludo></app-saludo>` en plantilla       |
+
 
 
 ## Enlace de datos
@@ -594,4 +634,88 @@ Angular usa HttpClient para hacer peticiones HTTP. Este se importa desde @angula
 ## Signals
 
 * Disponible a partir de Angular 16
-* Permiten un modelo reactivo más explícito para manejar el estado. Ejemplo básico:
+* Nueva forma de gestionar la reactividad
+* Permiten declarar valores reactivos simples y realizar seguimiento automático a sus cambios, ofreciendo una alternativa más intuitiva y eficiente a RxJS en muchos casos.
+* Es una función que encapsula un valor que puede cambiar con el tiempo y que notifica automáticamente a sus consumidores cuando cambia. Se parece a un estado reactivo en frameworks como SolidJS o Vue.
+
+Ejemplo con uppercase: 
+
+```typescript
+import {UpperCasePipe} from '@angular/common';
+
+@Component({
+  imports: [UpperCasePipe],
+})
+
+export class HeroesComponent {
+  ...
+}
+```
+
+```html
+<td>{{item.product | uppercase}}</td>
+```
+
+## Guards
+
+* Funciones que protegen rutas en Angular, permitiendo o denegando el acceso a ellas según lógica personalizada
+* Se utilizan principalmente en el enrutamiento para controlar el acceso a componentes y módulos.
+
+**¿Para qué sirven los Guards?**
+* Restringir el acceso a rutas (por ejemplo, si el usuario no está autenticado).
+* Ejecutar lógica antes de entrar o salir de una ruta.
+* Cancelar navegación o redirigir a otra página.
+* Proteger carga de módulos perezosos (lazy loading).
+
+
+**Tipos de Guards**
+| Tipo de Guard      | ¿Cuándo se ejecuta?                                     | Firma                                    |
+| ------------------ | ------------------------------------------------------- | ---------------------------------------- |
+| `CanActivate`      | Antes de activar una ruta                               | `canActivate(route, state)`              |
+| `CanActivateChild` | Antes de activar una ruta hija                          | `canActivateChild(route, state)`         |
+| `CanDeactivate`    | Antes de salir de una ruta                              | `canDeactivate(component, route, state)` |
+| `CanLoad`          | Antes de cargar un módulo (lazy)                        | `canLoad(route, segments)`               |
+| `CanMatch` (v14+)  | Decide si una ruta debe coincidir (mejor que `CanLoad`) | `canMatch(route, segments)`              |
+
+
+**Ejemplo: CanActivate guard simple**
+
+```typescript
+@Injectable({ providedIn: 'root' })
+export class AuthGuard implements CanActivate {
+  constructor(private authService: AuthService, private router: Router) {}
+
+  canActivate(): boolean {
+    if (this.authService.isLoggedIn()) {
+      return true;
+    }
+    this.router.navigate(['/login']);
+    return false;
+  }
+}
+```
+
+Y se aplica en la configuración de rutas:
+```typescript
+const routes: Routes = [
+  { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
+];
+```
+
+**Tabla comparativa de tipos de Guards**
+
+| Guard              | Momento de ejecución             | Uso principal                                   | Retorno esperado |         |           |
+| ------------------ | -------------------------------- | ----------------------------------------------- | ---------------- | ------- | --------- |
+| `CanActivate`      | Antes de mostrar la ruta         | Autenticación, autorización                     | \`true           | false   | UrlTree\` |
+| `CanActivateChild` | Antes de mostrar rutas hijas     | Protección de sub-rutas                         | \`true           | false   | UrlTree\` |
+| `CanDeactivate`    | Antes de salir de una ruta       | Confirmar salida (por ej., cambios sin guardar) | \`true           | false   | UrlTree\` |
+| `CanLoad`          | Antes de cargar un módulo (lazy) | Seguridad a nivel de carga                      | \`true           | false\` |           |
+| `CanMatch`         | Antes de hacer coincidir la ruta | Control avanzado del enrutamiento               | \`true           | false   | UrlTree\` |
+
+
+**Buenas prácticas**
+* Usa CanActivate para proteger rutas contra usuarios no autenticados.
+* Usa CanDeactivate para advertir antes de perder cambios en formularios.
+* Usa CanMatch en vez de CanLoad cuando necesitas lógica más avanzada o redirección.
+* Asegúrate de proveer los guards como servicios (providedIn: 'root').
+* Mantén la lógica de negocio en servicios, no directamente en el guard
