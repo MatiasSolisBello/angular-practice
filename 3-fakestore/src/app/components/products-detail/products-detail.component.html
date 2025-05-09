@@ -1,0 +1,32 @@
+<div class="container">
+    @if (loading) {
+        <div class="fullscreen-spinner">
+            <div class="spinner-grow" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+    }
+    
+    @if (!loading) {
+    <h2>Details of the product</h2>
+
+    <div class="row mt-4">
+        <div class="col-6">
+            <img src="{{product?.image}}" class="card-img-top" alt="{{product?.title}}">
+        </div> 
+        <div class="col-6">
+            <h4 class="card-title">{{product?.title}}</h4>
+            <h5> {{product?.price | currency:'USD':'symbol' }}</h5>
+
+            <span class="badge rounded-pill text-bg-primary">{{product?.category }}</span>
+            <p>{{product?.rating?.rate }} - ({{product?.rating?.count }})</p>
+
+            <p class="card-text">{{product?.description}}</p>
+            
+            <a [routerLink]="['/products']" class="btn btn-primary">
+                Go Back
+            </a>
+        </div>
+    </div>
+    }
+</div>
