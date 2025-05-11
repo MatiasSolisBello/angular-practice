@@ -1,1 +1,61 @@
-<p>contact works!</p>
+<div class="container">
+    <h1>Contact</h1>
+    <p>If you have any questions or comments, please don't hesitate to contact us.</p>
+    <p>Please complete the following form and we will contact you as soon as possible.</p>
+
+    <div *ngIf="successMessage" class="alert alert-success">
+        {{ successMessage }}
+    </div>
+
+
+    <form [formGroup]="contactForm" class="row g-3 needs-validation" novalidate (submit)="send($event)">
+        
+        <!-- Full Name -->
+        <div class="col-md-6">
+            <label for="full_name">Full name:</label>
+            <input id="full_name" class="form-control" type="text" formControlName="full_name"
+                [ngClass]="{'is-invalid' : hasErrors('full_name', 'required') || hasErrors('full_name', 'minlength')}" 
+            />
+
+            @if (hasErrors('full_name', 'required')) {
+                <span class="text-danger">You have to complete this field</span>
+            }
+            @if (hasErrors('full_name', 'minlength')) {
+                <span class="text-danger">Your name is too short!</span>
+            }
+        </div>
+
+        <!-- Email -->
+        <div class="col-md-6">
+            <label for="email">Email:</label>
+            <input id="email" type="email" class="form-control" formControlName="email"
+                [ngClass]="{'is-invalid' : hasErrors('email', 'required') || hasErrors('email', 'email')}" 
+            />
+            @if (hasErrors('email', 'required')) {
+                <span class="text-danger">You have to complete this field</span>
+            }
+            @if (hasErrors('email', 'email')) {
+                <span class="text-danger">Invalid email format</span>
+            }
+        </div>
+
+        <!-- Message -->
+        <div class="col-12">
+            <label for="message">Message:</label>
+            <textarea id="message" class="form-control" formControlName="message" rows="3"
+                [ngClass]="{'is-invalid' : hasErrors('message', 'required') || hasErrors('message', 'minlength')}">
+            </textarea>
+            @if (hasErrors('message', 'required')) {
+                <span class="text-danger">You have to complete this field</span>
+            }
+            @if (hasErrors('message', 'minlength')) {
+                <span class="text-danger">Your message is too short!</span>
+            }
+        </div>
+
+        <!-- Submit button -->
+        <div class="d-grid gap-2 col-6 mx-auto">
+            <button type="submit" class="btn btn-success" [disabled]="contactForm.invalid">Send message</button>
+        </div>
+    </form>
+</div>
