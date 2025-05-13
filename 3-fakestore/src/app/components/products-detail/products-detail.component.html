@@ -12,21 +12,26 @@
 
     <div class="row mt-4">
         <div class="col-6">
-            <img src="{{product?.image}}" class="card-img-top" alt="{{product?.title}}">
+            <img src="{{product?.image}}" class="card-img-top mx-auto d-block" 
+                alt="{{product?.title}}"
+            >
         </div> 
         <div class="col-6">
             <h4 class="card-title">{{product?.title}}</h4>
             <h5> {{product?.price | currency:'USD':'symbol' }}</h5>
 
-            <span class="badge rounded-pill text-bg-primary">{{product?.category }}</span>
+            <span class="badge rounded-pill text-bg-primary">
+                {{product?.category }}
+            </span>
             <p>{{product?.rating?.rate }} - ({{product?.rating?.count }})</p>
 
             <p class="card-text">{{product?.description}}</p>
             
-            <a [routerLink]="['/products']" class="btn btn-primary">
+            <a [routerLink]="['/products']" class="btn btn-outline-primary">
                 Go Back
             </a>
         </div>
     </div>
+    <br>
     }
 </div>

@@ -1,7 +1,8 @@
 <div class="container">
     <h1>Contact</h1>
-    <p>If you have any questions or comments, please don't hesitate to contact us.</p>
-    <p>Please complete the following form and we will contact you as soon as possible.</p>
+    <p>If you have any questions or comments, please don't hesitate to contact us.
+        Please complete the following form and we will contact you as soon as possible.
+    </p>
 
     <div *ngIf="successMessage" class="alert alert-success">
         {{ successMessage }}
@@ -55,7 +56,9 @@
 
         <!-- Submit button -->
         <div class="d-grid gap-2 col-6 mx-auto">
-            <button type="submit" class="btn btn-success" [disabled]="contactForm.invalid">Send message</button>
+            <button type="submit" class="btn btn-success" 
+                [disabled]="contactForm.invalid">Send message
+            </button>
         </div>
     </form>
 </div>

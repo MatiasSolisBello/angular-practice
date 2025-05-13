@@ -1,16 +1,25 @@
 <div class="container">
   <h1>These are our products:</h1>
 
+  <label class="form-label" for="category">Filter by category:</label>
+  <select id="category" [(ngModel)]="selectedCategory" (change)="filterByCategory(selectedCategory)" class="form-select">
+    <option value="">All</option>
+    <option *ngFor="let cat of categories" [value]="cat">{{ cat }}</option>
+  </select>
+  <br>
+
   <div class="row row-cols-1 row-cols-md-3 g-4">
     <div class="col mb-4" *ngFor="let product of productList; let i = index;">
       <div class="card">
-        <img class="card-img-top" [src]="product.image" [alt]="product.title">
+        <img class="card-img-top mx-auto d-block" [src]="product.image" [alt]="product.title">
         <div class="card-body">
             <h5 class="card-title">{{ product.title }}</h5>
             <p class="card-text">{{ product.price | currency:'USD':'symbol' }}</p>
-            <button type="button" class="btn btn-outline-primary" 
-              (click)="navegate(product.id)">Details
-            </button>
+            <div class="d-grid gap-2">
+              <button type="button" class="btn btn-outline-primary" 
+                (click)="navegate(product.id)">Details
+              </button>
+            </div>
         </div>
       </div>
     </div>

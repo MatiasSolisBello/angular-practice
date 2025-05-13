@@ -20,4 +20,12 @@ export class ApiService {
   getProduct(id: number):Observable<IProduct>{
     return this._http.get<IProduct>(`${this.urlBase}/${id}`);
   }
+
+  getAllCategories(): Observable<string[]> {
+    return this._http.get<string[]>(`${this.urlBase}/categories`);
+  }
+
+  getProductsByCategory(category: string): Observable<IProduct[]> {
+    return this._http.get<IProduct[]>(`${this.urlBase}/category/${category}`);
+  }
 }
