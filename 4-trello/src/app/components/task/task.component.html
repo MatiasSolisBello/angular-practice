@@ -1,0 +1,33 @@
+<div class="container mt-5">
+
+    <div class="row">
+        <h1 class="text-center montserrat">TODO</h1>
+    </div>
+
+
+    <div class="example-container">
+        <h2>To do</h2>
+        <div cdkDropList #todoList="cdkDropList" [cdkDropListData]="todo"
+            [cdkDropListConnectedTo]="[inProgressList, doneList]" class="example-list"
+            (cdkDropListDropped)="drop($event)">
+            <div *ngFor="let item of todo" class="example-box" cdkDrag>{{item}}</div>
+        </div>
+    </div>
+
+    <div class="example-container">
+        <h2>In progress</h2>
+        <div cdkDropList #inProgressList="cdkDropList" [cdkDropListData]="progress"
+            [cdkDropListConnectedTo]="[todoList, doneList]" class="example-list" (cdkDropListDropped)="drop($event)">
+            <div *ngFor="let item of progress" class="example-box" cdkDrag>{{item}}</div>
+        </div>
+    </div>
+
+    <div class="example-container">
+        <h2>Done</h2>
+        <div cdkDropList #doneList="cdkDropList" [cdkDropListData]="done"
+            [cdkDropListConnectedTo]="[todoList, inProgressList]" class="example-list"
+            (cdkDropListDropped)="drop($event)">
+            <div *ngFor="let item of done" class="example-box" cdkDrag>{{item}}</div>
+        </div>
+    </div>
+</div>
