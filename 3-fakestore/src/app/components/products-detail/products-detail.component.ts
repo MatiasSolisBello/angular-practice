@@ -28,8 +28,7 @@ export class ProductsDetailComponent implements OnInit {
         this.product = data
         this.loading = false;
       });
-    }
-    )
+    })
   }
 
   goBack() {
