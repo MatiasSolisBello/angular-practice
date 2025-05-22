@@ -1,0 +1,26 @@
+<div class="container mt-3">
+  <div class="col-12 col-md-6 offset-md-3">
+    <div class="card">
+      <div class="card-body">
+        <h2 class="text-center">Login</h2>
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+          <div>
+            <label for="correo" class="form-label">Correo:</label>
+            <input id="correo" name="correo" class="form-control" formControlName="correo" type="email" />
+          </div>
+
+          <div>
+            <label for="clave" class="form-label">Clave:</label>
+            <input id="clave" name="clave" class="form-control" formControlName="clave" type="password" />
+          </div>
+          <div class="d-grid gap-2 mt-3">
+            <button type="submit" [disabled]="loginForm.invalid" class="btn btn-success">
+                Inicar sesión
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+</div>

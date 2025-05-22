@@ -1,0 +1,40 @@
+<div class="container mt-3">
+  <div class="col-12 col-md-6 offset-md-3">
+    <div class="card">
+      <div class="card-body">
+        <h2 class="text-center">Registro de Usuario</h2>
+        <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+
+          <div>
+            <label for="rut" class="form-label">RUT:</label>
+            <input id="rut" name="rut" formControlName="rut" class="form-control" type="text" />
+          </div>
+
+          <div>
+            <label for="nombre" class="form-label">Nombre:</label>
+            <input id="nombre" name="nombre" class="form-control" formControlName="nombre" type="text" />
+          </div>
+
+          <div>
+            <label for="correo" class="form-label">Correo:</label>
+            <input id="correo" name="correo" class="form-control" formControlName="correo" type="email" />
+          </div>
+
+          <div>
+            <label for="clave" class="form-label">Clave:</label>
+            <input id="clave" name="clave" class="form-control" formControlName="clave" type="password" />
+          </div>
+
+          <!--  <div>
+          <label for="role">Rol:</label>
+          <input id="role" name="role" formControlName="role" type="text" />
+        </div> -->
+          <div class="d-grid gap-2 mt-3">
+            <button type="submit" [disabled]="registerForm.invalid" class="btn btn-success">Registrarse</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+</div>
