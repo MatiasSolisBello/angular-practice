@@ -11,6 +11,7 @@ import { Router } from '@angular/router';
   styleUrl: './login.component.css'
 })
 export class LoginComponent implements OnInit {
+  errorMessage = "";
   loginForm!: FormGroup;
 
   constructor(private fb: FormBuilder, private _apiService: ApiService, 
@@ -33,8 +34,21 @@ export class LoginComponent implements OnInit {
           this.router.navigate(['/']);
         },
         error: (err) => {
-          alert('Error al iniciar sesión');
-          console.error(err);
+          const defaultMessage = 'Error inesperado. Intente nuevamente más tarde.';
+
+          switch (err.status) {
+            case 0:
+              this.errorMessage = 'No se puede conectar con el servidor. Verifica tu conexión o que el servidor esté en línea.';
+              break;
+            case 401:
+              this.errorMessage = err.error?.message || 'Credenciales inválidas';
+              break;
+            case 500:
+              this.errorMessage = err.error?.message || 'Error del servidor';
+              break;
+            default:
+              this.errorMessage = defaultMessage;
+          }
         }
       });
     }

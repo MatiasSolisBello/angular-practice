@@ -3,6 +3,12 @@
     <div class="card">
       <div class="card-body">
         <h2 class="text-center">Login</h2>
+
+        <div *ngIf="errorMessage" class="alert alert-danger">
+          {{ errorMessage }}
+        </div>
+
+
         <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
           <div>
             <label for="correo" class="form-label">Correo:</label>

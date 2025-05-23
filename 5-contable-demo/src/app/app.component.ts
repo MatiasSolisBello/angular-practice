@@ -20,9 +20,8 @@ export class AppComponent {
   }
 
   logout() {
-    console.log('LOG OUT');
     this.authService.logout();
-    this.router.navigate(['/']);
+    this.router.navigate(['/login']);
   }
   
   onOption(menuOption: string){
