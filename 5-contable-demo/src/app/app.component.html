@@ -27,6 +27,20 @@
           </li>
 
           <li class="nav-item">
+            <a class="nav-link" routerLink="user" [ngClass]="{active: menuOption == 'user'}"
+              *ngIf="isAuthenticated()" (click)="onOption('user')">Usuarios</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="bodega" [ngClass]="{active: menuOption == 'bodega'}"
+              *ngIf="isAuthenticated()" (click)="onOption('bodega')">Bodega</a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" routerLink="product" [ngClass]="{active: menuOption == 'product'}"
+              (click)="onOption('product')">Productos</a>
+          </li>
+
+          <li class="nav-item">
             <a class="nav-link"
               *ngIf="isAuthenticated()" (click)="logout()">Cerrar sesión</a>
           </li>

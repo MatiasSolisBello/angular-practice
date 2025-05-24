@@ -1,0 +1,17 @@
+<div class="container">
+  <h1>These are our products:</h1>
+  <div class="row row-cols-1 row-cols-md-3 g-4">
+    <div class="col mb-4" *ngFor="let product of listProducts; let i = index;">
+      <div class="card">
+        <img class="card-img-top mx-auto d-block" [src]="product.imagen" [alt]="product.nombre">
+        <div class="card-body">
+            <h5 class="card-title">{{ product.nombre }}</h5>
+            <p class="card-text">{{ product.precio | currency:'USD':'symbol' }}</p>
+            <div class="d-grid gap-2">
+              <button type="button" class="btn btn-outline-primary">Details</button>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

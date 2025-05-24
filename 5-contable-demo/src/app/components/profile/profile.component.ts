@@ -17,7 +17,6 @@ export class ProfileComponent {
   ngOnInit(): void {
     const payload = this.authService.getPayload();
     if (payload) {
-      console.log(payload);
       this.nombre = payload.nombre;
       this.role = payload.role;
     }

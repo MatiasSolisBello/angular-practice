@@ -30,6 +30,8 @@ export class LoginComponent implements OnInit {
     if (this.loginForm.valid) {
       this._apiService.login(this.loginForm.value).subscribe({
         next: (res) => {
+
+          // Guardar el token en el localStorage
           localStorage.setItem('token', res.token);
           this.router.navigate(['/']);
         },
