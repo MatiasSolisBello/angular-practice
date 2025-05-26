@@ -25,10 +25,10 @@
             <a class="nav-link" routerLink="profile" [ngClass]="{active: menuOption == 'profile'}"
               *ngIf="isAuthenticated()" (click)="onOption('profile')">Perfil</a>
           </li>
-
+          
           <li class="nav-item">
             <a class="nav-link" routerLink="user" [ngClass]="{active: menuOption == 'user'}"
-              *ngIf="isAuthenticated()" (click)="onOption('user')">Usuarios</a>
+              *ngIf="isAuthenticated() && role === 'ADMIN_ROLE' " (click)="onOption('user')">Usuarios</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" routerLink="bodega" [ngClass]="{active: menuOption == 'bodega'}"

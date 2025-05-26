@@ -31,4 +31,9 @@ export class AuthService {
   logout() {
     localStorage.removeItem('token');
   }
+
+  getRole(): string | null {
+    const role = this.getPayload()?.role || null
+    return role;
+  }
 }

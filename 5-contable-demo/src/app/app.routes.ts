@@ -8,13 +8,31 @@ import { BodegaComponent } from './components/bodega/bodega.component';
 import { ProductComponent } from './components/product/product.component';
 import { authGuard } from './guards/auth.guard';
 import { roleGuard } from './guards/role.guard';
+import { FormUserComponent } from './components/user/form-user/form-user.component';
 
 export const routes: Routes = [
     { path: '', component: HomeComponent },
     { path: 'login', component: LoginComponent },
     { path: 'register', component: RegisterComponent },
     { path: 'profile', component: ProfileComponent, canActivate: [authGuard] },
-    { path: 'user', component: UserComponent, canActivate: [authGuard] },
+    { path: 'user', component: UserComponent, 
+        canActivate: [authGuard, roleGuard],  
+        data: { 
+            roles: ['ADMIN_ROLE'] 
+        } 
+    },
+    { path: 'user/create', component: FormUserComponent, 
+        canActivate: [authGuard, roleGuard],  
+        data: { 
+            roles: ['ADMIN_ROLE'] 
+        } 
+    },
+    { path: 'user/edit/:id', component: FormUserComponent, 
+        canActivate: [authGuard, roleGuard],  
+        data: { 
+            roles: ['ADMIN_ROLE'] 
+        } 
+    },
     { path: 'bodega', component: BodegaComponent, canActivate: [authGuard, roleGuard] },
     { path: 'product', component: ProductComponent },
 ];
