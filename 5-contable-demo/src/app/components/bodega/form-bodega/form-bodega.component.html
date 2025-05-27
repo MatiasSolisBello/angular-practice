@@ -1,0 +1,55 @@
+<div class="container mt-3">
+    <div class="col-12 col-md-6 offset-md-3">
+        <div class="card">
+            <div class="card-body">
+                <h2 class="text-center">{{action}} Bodega</h2>
+                <form [formGroup]="bodegaForm" (ngSubmit)="onSubmit()">
+                    <div>
+                        <label for="numero" class="form-label">Numero:</label>
+                        <input id="numero" name="numero" formControlName="numero" class="form-control" type="number" />
+                    </div>
+                    <div>
+                        <label for="nombre" class="form-label">Nombre:</label>
+                        <input id="nombre" name="nombre" class="form-control" formControlName="nombre" type="text" />
+                    </div>
+                    <div>
+                        <label for="direccion" class="form-label">Dirección:</label>
+                        <input id="direccion" name="direccion" class="form-control" formControlName="direccion"
+                            type="text" />
+                    </div>
+                    <div>
+                        <label for="descripcion" class="form-label">Descripcion:</label>
+                        <input id="descripcion" name="descripcion" class="form-control" formControlName="descripcion"
+                            type="text" />
+                    </div>
+                    <div>
+                        <label for="estado">Estado:</label>
+                        <select class="form-select" aria-label="Default select example" id="estado" name="estado"
+                            formControlName="estado">
+                            <option selected>Seleccione</option>
+                            <option value="En Mantención">En Mantención</option>
+                            <option value="Abierto">Abierto</option>
+                            <option value="Cerrado">Cerrado</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label for="usuario">Bodeguero:</label>
+                        <select class="form-select" aria-label="Default select example" id="usuario" name="usuario"
+                            formControlName="usuario">
+                            <option value="">Seleccione un bodeguero</option>
+                            <option *ngFor="let user of usuario" [value]="user._id">{{ user.nombre }}</option>
+                        </select>
+                    </div>
+
+
+                    <div class="d-grid gap-2 mt-3">
+                        <button type="submit" [disabled]="bodegaForm.invalid" class="btn btn-success">
+                            {{action}} Bodega
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

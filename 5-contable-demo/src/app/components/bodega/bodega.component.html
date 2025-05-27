@@ -4,7 +4,7 @@
         <h3>Lista de Bodegas</h3>
     </div>
     <div class="col-lg-6 text-end" >
-        <a class="btn btn-success">
+        <a class="btn btn-success" [routerLink]="['/bodega/create']">
             Agregar bodega
         </a>
     </div>
@@ -29,10 +29,12 @@
                 <td>{{bodega.direccion}}</td>
                 <td>{{bodega.estado}}</td>
                 <td>
-                    <button class="btn btn-warning btm-sm float-right">
+                    <button class="btn btn-warning btm-sm"
+                        [routerLink]="['/bodega/edit', bodega._id]">
                         EDITAR
                     </button>
-                    <button class="btn btn-danger btm-sm float-left">
+                    <button class="btn btn-danger btm-sm"
+                        (click)="delete(bodega._id)">
                         BORRAR
                     </button>
                 </td>
