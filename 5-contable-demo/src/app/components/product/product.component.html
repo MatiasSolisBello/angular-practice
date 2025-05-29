@@ -1,5 +1,10 @@
 <div class="container">
-  <h1>These are our products:</h1>
+  <br>
+  <h2>These are our products:</h2>
+  <a class="btn btn-success" [routerLink]="['/product/create']">
+    Agregar producto
+  </a>
+  <br>
   <div class="row row-cols-1 row-cols-md-3 g-4">
     <div class="col mb-4" *ngFor="let product of listProducts; let i = index;">
       <div class="card">

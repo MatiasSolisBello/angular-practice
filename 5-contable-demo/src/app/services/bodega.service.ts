@@ -35,7 +35,6 @@ export class BodegaService {
   }
 
   updateBodega(_id: string, bodega: Bodega): Observable<Bodega>{
-    console.log(`${this.url}/${_id}`);
     return this.http.put<Bodega>(
       `${this.url}/${_id}`, bodega, 
       { headers: this.getAuthHeaders() }

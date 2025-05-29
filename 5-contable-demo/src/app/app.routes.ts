@@ -10,6 +10,7 @@ import { authGuard } from './guards/auth.guard';
 import { roleGuard } from './guards/role.guard';
 import { FormUserComponent } from './components/user/form-user/form-user.component';
 import { FormBodegaComponent } from './components/bodega/form-bodega/form-bodega.component';
+import { FormProductComponent } from './components/product/form-product/form-product.component';
 
 export const routes: Routes = [
     { path: '', component: HomeComponent },
@@ -48,4 +49,10 @@ export const routes: Routes = [
         } 
     },
     { path: 'product', component: ProductComponent },
+    { path: 'product/create', component: FormProductComponent, 
+        canActivate: [authGuard, roleGuard],  
+        data: { 
+            roles: ['ADMIN_ROLE'] 
+        } 
+    },
 ];

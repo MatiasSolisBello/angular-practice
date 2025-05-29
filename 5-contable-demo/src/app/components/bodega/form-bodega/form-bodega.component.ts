@@ -46,18 +46,14 @@ export class FormBodegaComponent {
 
   onSubmit() {
     if (this.bodegaForm.valid) {
-      console.log('IdBodega: ', this.IdBodega); 
-      console.log(' Form Value: ', this.bodegaForm.value);
       if (this.IdBodega) {
         this._bodegaService.updateBodega(this.IdBodega, this.bodegaForm.value).subscribe(data => {
-          console.log('bodega actualizado', data);
           this.router.navigate(['/bodega']);
         }, error => {
           console.error('Error al actualizar el bodega', error);
         });
       } else {
         this._bodegaService.createBodega(this.bodegaForm.value).subscribe(data => {
-          console.log('bodega creado', data);
           this.router.navigate(['/bodega']);
         }, error => {
           console.error('Error al crear el bodega', error);
@@ -72,7 +68,6 @@ export class FormBodegaComponent {
   esEditar(){
     this.action = 'Editar';
     this._bodegaService.getBodegaById(this.IdBodega).subscribe(data => {
-      console.log('DATA: ', data);
       this.bodegaForm.patchValue({
         numero: data.numero,
         nombre: data.nombre,

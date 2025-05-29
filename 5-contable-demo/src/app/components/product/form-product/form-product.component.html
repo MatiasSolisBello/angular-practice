@@ -1,0 +1,47 @@
+<div class="container mt-3">
+    <div class="col-12 col-md-6 offset-md-3">
+        <div class="card">
+            <div class="card-body">
+                <h2 class="text-center">{{action}} Producto</h2>
+                <form [formGroup]="productForm" (ngSubmit)="onSubmit()" enctype="multipart/form-data">
+                    <div>
+                        <label for="nombre" class="form-label">Nombre:</label>
+                        <input id="nombre" name="nombre" class="form-control" formControlName="nombre" type="text" />
+                    </div>
+                    <div>
+                        <label for="descripcion" class="form-label">Descripcion:</label>
+                        <input id="descripcion" name="descripcion" class="form-control" formControlName="descripcion"
+                            type="text" />
+                    </div>
+                    <div>
+                        <label for="precio" class="form-label">precio:</label>
+                        <input id="precio" name="precio" formControlName="precio" class="form-control" type="number" />
+                    </div>
+                    <div>
+                        <label for="stock" class="form-label">stock:</label>
+                        <input id="stock" name="stock" formControlName="stock" class="form-control" type="number" />
+                    </div>
+                    <div class="mb-3">
+                        <label for="imagen" class="form-label">Seleccione imagen de producto</label>
+                        <input class="form-control" type="file" id="imagen" name="imagen" formControlName="imagen">
+                    </div>
+                    <div>
+                        <label for="bodega">Seleccione bodega:</label>
+                        <select class="form-select" aria-label="Default select example" id="bodega" name="bodega"
+                            formControlName="bodega">
+                            <option value="">Seleccione un bodeguero</option>
+                            <option *ngFor="let bodega of bodega" [value]="bodega._id">{{ bodega.nombre }}</option>
+                        </select>
+                    </div>
+
+
+                    <div class="d-grid gap-2 mt-3">
+                        <button type="submit" [disabled]="productForm.invalid" class="btn btn-success">
+                            {{action}} Producto
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

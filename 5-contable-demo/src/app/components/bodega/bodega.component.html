@@ -19,6 +19,7 @@
                 <th>Nombre</th>
                 <th>Direccion</th>
                 <th>Estado</th>
+                <th>Bodeguero</th>
                 <th>Acciones</th>
             </tr>
         </thead>
@@ -28,6 +29,7 @@
                 <td>{{bodega.nombre}}</td>
                 <td>{{bodega.direccion}}</td>
                 <td>{{bodega.estado}}</td>
+                <td>{{bodega.usuario?.nombre}}</td>
                 <td>
                     <button class="btn btn-warning btm-sm"
                         [routerLink]="['/bodega/edit', bodega._id]">

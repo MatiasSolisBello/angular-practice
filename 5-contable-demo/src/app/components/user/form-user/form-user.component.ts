@@ -47,14 +47,12 @@ export class FormUserComponent implements OnInit {
     if (this.userForm.valid) {
       if (this.IdUsuario) {
         this._userService.updateUser(this.IdUsuario, this.userForm.value).subscribe(data => {
-          console.log('Usuario actualizado', data);
           this.router.navigate(['/user']);
         }, error => {
           console.error('Error al actualizar el usuario', error);
         });
       } else {
         this._userService.createUser(this.userForm.value).subscribe(data => {
-          console.log('Usuario creado', data);
           this.router.navigate(['/user']);
         }, error => {
           console.error('Error al crear el usuario', error);
