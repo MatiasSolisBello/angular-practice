@@ -27,7 +27,7 @@ export class FormProductComponent implements OnInit{
       descripcion: ['', Validators.required],
       precio: ['', [Validators.required]],
       stock: ['', Validators.required],
-      imagen: ['', Validators.required],
+      imagen: [''],
       bodega: ['', Validators.required]
     });
   }
@@ -50,6 +50,7 @@ export class FormProductComponent implements OnInit{
         //this.router.navigate(['/product']);
         //console.log('Updating product:', this.productForm.value);
       } else {
+        console.log(this.productForm.value);
         this._productService.createProduct(this.productForm.value).subscribe(data => {
           console.log('data: ', data);
           this.router.navigate(['/product']);

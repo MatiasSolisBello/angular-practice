@@ -3,6 +3,7 @@ import { Producto } from '../../models/Producto';
 import { ProductService } from '../../services/product.service';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-product',
@@ -12,10 +13,17 @@ import { RouterLink } from '@angular/router';
 })
 export class ProductComponent implements OnInit {
   listProducts?: Producto[];
+  role: string | null = null;
   
-  constructor(private productService: ProductService){}
+  constructor(private productService: ProductService,
+    private authService: AuthService
+  ){}
 
   ngOnInit(): void {
+    const payload = this.authService.getPayload();
+    if (payload) {
+      this.role = payload.role;
+    }
     this.cargarProducto();
   }
 
