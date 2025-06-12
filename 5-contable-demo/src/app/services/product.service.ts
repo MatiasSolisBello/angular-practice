@@ -16,7 +16,24 @@ export class ProductService {
     return this.http.get<Producto[]>(this.url);
   }
 
+  getProductById(_id: string): Observable<any>  {
+    return this.http.get<Producto[]>(`${this.url}/${_id}`);
+  }
+
   createProduct(data: any): Observable<any>{
     return this.http.post(this.url, data, { headers: this._authService.getAuthHeaders() });
+  }
+
+  updateProducto(_id: string, data: FormData): Observable<Producto>{
+    return this.http.put<any>(
+      `${this.url}/${_id}`, data, 
+      { headers: this._authService.getAuthHeaders() }
+    );
+  }
+
+  deleteProducto(_id: string): Observable<void> {
+    return this.http.delete<void>(
+      `${this.url}/${_id}`, { headers: this._authService.getAuthHeaders() }
+    );
   }
 }

@@ -32,7 +32,8 @@
           </li>
           <li class="nav-item">
             <a class="nav-link" routerLink="bodega" [ngClass]="{active: menuOption == 'bodega'}"
-              *ngIf="isAuthenticated()" (click)="onOption('bodega')">Bodega</a>
+              *ngIf="isAuthenticated() && role && ['ADMIN_ROLE', 'BODEGA_ROLE'].includes(role)" 
+              (click)="onOption('bodega')">Bodega</a>
           </li>
 
           <li class="nav-item">

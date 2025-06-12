@@ -55,4 +55,10 @@ export const routes: Routes = [
             roles: ['ADMIN_ROLE'] 
         } 
     },
+    { path: 'product/edit/:id', component: FormProductComponent, 
+        canActivate: [authGuard, roleGuard],  
+        data: { 
+            roles: ['ADMIN_ROLE'] 
+        } 
+    },
 ];

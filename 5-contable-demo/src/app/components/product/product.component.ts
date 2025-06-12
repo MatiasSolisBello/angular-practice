@@ -32,4 +32,12 @@ export class ProductComponent implements OnInit {
       this.listProducts = data;
     });
   }
+
+
+  deleteProducto(_id: string) {
+    this.productService.deleteProducto(_id).subscribe({
+      next: () => this.cargarProducto(),
+      error: err => console.error("Error al eliminar producto:", err)
+    })
+  }
 }

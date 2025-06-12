@@ -23,7 +23,9 @@
                     </div>
                     <div class="mb-3">
                         <label for="imagen" class="form-label">Seleccione imagen de producto</label>
-                        <input class="form-control" type="file" id="imagen" name="imagen" formControlName="imagen">
+                        <input class="form-control" type="file" id="imagen" name="imagen" 
+                            formControlName="imagen" (change)="onFileSelected($event)"
+                        >
                     </div>
                     <div>
                         <label for="bodega">Seleccione bodega:</label>

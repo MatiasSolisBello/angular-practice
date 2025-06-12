@@ -27,7 +27,7 @@ export class BodegaComponent {
   delete(_id: string){
     this.bodegaService.deleteBodega(_id).subscribe({
       next: () => this.cargarBodega(),
-      error: err => console.error("Error al eliminar usuario:", err)
+      error: err => console.error("Error al eliminar bodega:", err)
     })
   }
 

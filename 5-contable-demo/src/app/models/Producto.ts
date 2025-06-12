@@ -1,7 +1,7 @@
 import { Bodega } from "./Bodega";
 
 export class Producto {
-    id!: number;
+    _id!: string;
     nombre?: string;
     descripcion?: string;
     precio?: number;
