@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { FormBodegaComponent } from './form-bodega.component';
+import { RouterTestingModule } from '@angular/router/testing';
+import { HttpClientModule } from '@angular/common/http';
 
 describe('FormBodegaComponent', () => {
   let component: FormBodegaComponent;
@@ -8,7 +10,7 @@ describe('FormBodegaComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [FormBodegaComponent]
+      imports: [FormBodegaComponent, RouterTestingModule, HttpClientModule]
     })
     .compileComponents();
 
