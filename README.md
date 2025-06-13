@@ -83,7 +83,12 @@ npm install -g @angular/cli
 npm install -g @angular/cli@16.2.10
 ```
 
-Crear aplicación (usa guiones y evita mayusculas)
+Checkear version
+```shell
+ng version
+```
+
+Crear aplicación (usa guiones y evita mayusculas) y se le da no a routes
 ```shell
 ng new new_project
 ```

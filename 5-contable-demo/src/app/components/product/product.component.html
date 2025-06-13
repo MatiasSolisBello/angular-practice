@@ -1,6 +1,5 @@
 <div class="container">
   <br>
-  <h2>These are our products:</h2>
   <div *ngIf="role === 'ADMIN_ROLE'">
     <a class="btn btn-success" [routerLink]="['/product/create']">
       Agregar producto
@@ -31,5 +30,8 @@
         </div>
       </div>
     </div>
+  </div>
+  <div *ngIf="listProducts && listProducts.length === 0" class="alert alert-info text-center mt-3">
+    No hay productos disponibles.
   </div>
 </div>
