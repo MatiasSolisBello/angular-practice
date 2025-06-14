@@ -12,12 +12,12 @@ export class ProductService {
 
   constructor(private http: HttpClient, private _authService: AuthService) { }
 
-  getProducts() {
+  getProducts():Observable<any> {
     return this.http.get<Producto[]>(this.url);
   }
 
-  getProductById(_id: string): Observable<any>  {
-    return this.http.get<Producto[]>(`${this.url}/${_id}`);
+  getProductById(_id: string): Observable<Producto>  {
+    return this.http.get<Producto>(`${this.url}/${_id}`);
   }
 
   createProduct(data: any): Observable<any>{
