@@ -1,59 +1,75 @@
-# 3Fakestore
+## Resumen del proyecto
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.8.
+<img src="https://raw.githubusercontent.com/MatiasSolisBello/angular-practice/refs/heads/main/img/project-3.png" alt="Alt Text" width="600" height="600">
 
-## Development server
+## Codigo clave
 
-To start a local development server, run:
+Service
 
-```bash
-ng serve
+```javascript
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { IProduct } from '../models/product.model';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class ApiService {
+
+  // Obtener link
+  private urlBase: string = 'https://fakestoreapi.com/products';
+
+  constructor(private _http: HttpClient){ }
+
+  getProducts():Observable<IProduct[]>{
+    return this._http.get<IProduct[]>(this.urlBase);
+  }
+}
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+Componente
+```javascript
+export class ProductsComponent implements OnInit {
+  productList: IProduct[] = []
+  categories: string[] = [];
+  selectedCategory: string = '';
 
-## Code scaffolding
+  constructor(
+    private _apiService: ApiService,
+    private _router: Router
+  ) {}
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+  ngOnInit(): void {
+    this.getAllProducts()
 
-```bash
-ng generate component component-name
+    this._apiService.getAllCategories().subscribe(data => {
+      this.categories = data;
+    });
+  }
+
+  getAllProducts() {
+    this._apiService.getProducts().subscribe((data: IProduct[]) => {
+      this.productList = data;
+    });
+  }
+}
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
+HTML
+```html
+<!--for productList-->
+<div class="col mb-4" *ngFor="let product of productList; let i = index;">
+  <div class="card">
+    <img class="card-img-top mx-auto d-block" [src]="product.image" [alt]="product.title">
+    <div class="card-body">
+        <h5 class="card-title">{{ product.title }}</h5>
+        <p class="card-text">{{ product.price | currency:'USD':'symbol' }}</p>
+        <div class="d-grid gap-2">
+          <button type="button" class="btn btn-outline-primary" 
+            (click)="navegate(product.id)">Details
+          </button>
+        </div>
+    </div>
+  </div>
+</div>
 ```
-
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
